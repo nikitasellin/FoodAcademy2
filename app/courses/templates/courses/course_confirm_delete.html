@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Удаление курса
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Удаление курса "{{ course }}" </h1>
+    <div class="alert-danger">
+        Восстановление удалённого объекта невозможно. Вы уверены?
+    </div>
+    {% include 'form.html' %}
+</div>
+{% endblock %}

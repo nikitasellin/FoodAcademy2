@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+
+  app:
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    environment:
+      PG_HOST: ${POSTGRES_HOST}
+      PG_DB: ${POSTGRES_DB}
+      PG_USER: ${POSTGRES_USER}
+      PG_PASSWORD: ${POSTGRES_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
+    depends_on:
+      - db
+    volumes:
+      - ./app:/app
+      - ./deploy/Moscow:/etc/localtime
+    command: ./entrypoint.sh
+
+  db:
+    image: postgres:12
+    environment:
+      PGTZ: 'Europe/Moscow'
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ../foodacademy-pgdb:/var/lib/postgresql/data
+      - ./deploy/Moscow:/etc/localtime
+
+  redis:
+    image: redis:6.0.10-alpine
+    ports:
+      - 6379:6379
+
+  celery:
+    build:
+      context: .
+    environment:
+      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
+    depends_on:
+      - redis
+    volumes:
+      - ./app:/app
+    command: ./start_celery.sh

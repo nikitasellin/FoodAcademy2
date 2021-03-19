@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Список курсов
+{% endblock %}
+
+{% block admin_only %}
+  <a href="{% url 'courses:course_add' %}">
+    <button class="btn btn-light" type="button">Добавить курс</button>
+  </a>
+{% endblock %}
+
+{% block body %}
+  <div class="container col-lg-6">
+    <h1 class="text-center">Список курсов</h1>
+    <hr>
+    <div class="row row-cols-1 row-cols-md-4">
+      {% for course in course_list %}
+        <div class="col mb-4">
+          <div class="card">
+            <a href="{% url 'courses:course_detail' course.pk %}" class="card-link">
+              <img src="{{ course.image.thumbnail.url }}" class="card-img-top" alt="{{ course }}">
+            </a>
+            <div class="card-body">
+              <h5 class="card-title text-center">{{ course|title }}</h5>
+              {% if user.is_superuser %}
+                <p class="card-text text-center">
+                  <a href="{% url 'courses:course_edit' course.pk %}" class="card-link">Редактировать</a>
+                  <br>
+                  <a href="{% url 'courses:course_delete' course.pk %}" class="card-link">Удалить</a>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

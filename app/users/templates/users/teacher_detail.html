@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ teacher }}
+{% endblock %}
+
+{% block body %}
+  <div class="container col-lg-6">
+    <h1 class="text-center">Информация о преподавателе</h1>
+    <hr>
+    <div class="row">
+      <div class="col-lg-4 text-left">
+        {% if teacher.avatar %}
+          <img src="{{ teacher.avatar.photo.url }}" class="img-thumbnail" alt="Аватар">
+        {% else %}
+          Аватар не загружен
+        {% endif %}
+      </div>
+      <div class="col-lg-8 text-left">
+          <b>{{ teacher|title }}</b>
+          <hr>
+          {{ teacher.bio|linebreaks }}
+          <hr>
+          <b>Преподаватель курсов:</b>
+          {% for course in teacher.courses.all %}
+            <br>
+              <a href="{{ course.get_absolute_url }}">{{ course }}</a>
+          {% endfor %}
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

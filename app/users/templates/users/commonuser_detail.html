@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Профиль пользователя {{ object.full_name }}
+{% endblock %}
+
+{% block body %}
+  <div class="container col-lg-4">
+      <h1 class="text-center">Профиль пользователя</h1>
+      <hr>
+    <div class="row">
+      <div class="col-lg-4 text-right">Имя:</div>
+      <div class="col-lg-8 text-left"><b>{{ object.first_name }}</b></div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 text-right">Фамилия:</div>
+      <div class="col-lg-8 text-left"><b>{{ object.last_name }}</b></div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 text-right">E-mail:</div>
+      <div class="col-lg-8 text-left"><b>{{ object.email }}</b></div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-lg-4 text-right">API access token:</div>
+      <div class="col-lg-8 text-left"><b>{{ access_token|default:'отсутствует' }}</b></div>
+      <div class="col-lg-4 text-right">API refresh token:</div>
+      <div class="col-lg-8 text-left"><b>{{ refresh_token|default:'отсутствует' }}</b></div>
+    </div>
+    <hr>
+    {% if not refresh_token %}
+      <h3 class="text-center">Получить токен для API (введите свой пароль)</h3>
+    {% else %}
+      <h3 class="text-center">Обновить токен для API (введите refresh token)</h3>
+    {% endif %}
+    <hr>
+    {% include 'form.html' %}
+  </div>
+{% endblock %}

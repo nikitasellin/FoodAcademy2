@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Список преподавателей
+{% endblock %}
+
+{% block admin_only %}
+  <a href="{% url 'users:teacher_add' %}">
+    <button class="btn btn-light" type="button">Добавить преподавателя</button>
+  </a>
+{% endblock %}
+
+{% block body %}
+  <div class="container col-lg-6">
+    <h1 class="text-center">Список преподавателей</h1>
+    <hr>
+    <div class="row row-cols-1 row-cols-md-4">
+      {% for teacher in teacher_list %}
+        <div class="col mb-4">
+          <div class="card">
+            <a href="{% url 'users:teacher_detail' teacher.pk %}" class="card-link">
+              <img src="{{ teacher.avatar.thumbnail.url }}" class="card-img-top" alt="{{ teacher }}">
+            </a>
+            <div class="card-body">
+              <p class="card-title text-center"><b>{{ teacher|title }}</b></p>
+              {% if user.is_superuser %}
+                <p class="card-text text-center">
+                  <a href="{% url 'users:teacher_edit' teacher.pk %}" class="card-link">Редактировать</a>
+                  <br>
+                  <a href="{% url 'users:teacher_delete' teacher.pk %}" class="card-link">Удалить</a>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
