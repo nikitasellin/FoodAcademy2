@@ -56,7 +56,7 @@ deploy/ - вспомогательные файлы для развёртыва�
 ```
 # mkdir FoodAcademy
 # cd FoodAcademy/
-# git clone https://github.com/nikitasellin/FoodAcademy.git .
+# git clone https://github.com/nikitasellin/FoodAcademy2.git .
 ```
 **Важно! В целях безопасности, рекомендуется сменить секретный ключ, реквизиты доступа к БД и пару e-mail/пароль администратора в
 файлах .env и config/dev.py**
