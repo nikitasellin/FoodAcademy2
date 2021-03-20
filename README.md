@@ -40,6 +40,7 @@ app/ - проект
         management/
             commands/   
                 add_users.py
+                create_administrator.py
         migrations/ 
         tests/     
         admin.py
@@ -138,3 +139,11 @@ http://127.0.0.1:8000/graphql/
   }
 }
 ```
+
+### Frontend.
+
+Тестовая страница (получение списка курсов с помощью fetch, списка преподавателей с помощью axios) доступна по адресу:
+```
+http://127.0.0.1:8000/frontend/
+```
+Дополнительно: генерация токенов в личном кабинете переделана на ajax.

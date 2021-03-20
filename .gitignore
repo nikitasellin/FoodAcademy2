@@ -131,4 +131,20 @@ dmypy.json
 .idea/
 
 app/media/*
-app/frontend/*
+
+### Frontend
+# dependencies
+node_modules
+
+# production
+# build
+
+# misc
+.DS_Store
+
+npm-debug.log
+yarn-error.log
+yarn.lock
+.yarnclean
+.vscode
+.idea

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Тестовая страница
+{% endblock %}
+
+{% block body %}
+  <div class="container-fluid">
+    <div>
+      <h2>
+        Список курсов:
+        <button class="btn btn-dark" id="fetchButton">fetch</button>
+      </h2>
+    </div>
+    <div id="coursesList"></div>
+    <div>
+      <h2>
+        Список преподавателей:
+        <button class="btn btn-dark" id="axiosButton">axios</button>
+      </h2>
+    </div>
+    <div id="teachersList"></div>
+  </div>
+
+  {% load static %}
+  <script src="{% static 'frontend/index.js' %}"></script>
+{% endblock %}

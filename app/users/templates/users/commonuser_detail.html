@@ -23,17 +23,50 @@
     <hr>
     <div class="row">
       <div class="col-lg-4 text-right">API access token:</div>
-      <div class="col-lg-8 text-left"><b>{{ access_token|default:'отсутствует' }}</b></div>
-      <div class="col-lg-4 text-right">API refresh token:</div>
-      <div class="col-lg-8 text-left"><b>{{ refresh_token|default:'отсутствует' }}</b></div>
+      <div class="col-lg-8 text-left text-break" id="accessToken"><b>отсутствует</b></div>
+      <div class="col-lg-4 text-right ">API refresh token:</div>
+      <div class="col-lg-8 text-left text-break" id="refreshToken"><b>отсутствует</b></div>
     </div>
     <hr>
-    {% if not refresh_token %}
-      <h3 class="text-center">Получить токен для API (введите свой пароль)</h3>
-    {% else %}
-      <h3 class="text-center">Обновить токен для API (введите refresh token)</h3>
-    {% endif %}
+    <h3 class="text-center">API-токены:</h3>
+    <ul>
+      <li>введите e-mail и пароль для генерации токенов</li>
+      <li>введите refresh token для обновления access-токена</li>
+    </ul>
+    <!-- Manipulate tokens with AJAX  -->
+    <form action="" method="post" id="tokenForm">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-4 text-right">E-mail:</div>
+          <div class="col-lg-8"><input type="email" name="email" id="id_email" value="{{ object.email }}"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-4 text-right">Пароль:</div>
+          <div class="col-lg-8"><input type="password" name="password" id="id_password"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-4 text-right">Refresh token:</div>
+          <div class="col-lg-8"><input type="text" name="refreshToken" maxlength="500" id="id_refresh_token"></div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-lg-4 text-right"></div>
+        <div class="col-lg-8">
+          <button type="submit" class="btn btn-secondary">Submit</button>
+        </div>
+      </div>
+    </form>
     <hr>
-    {% include 'form.html' %}
+    <h3 class="text-center" id="tokenAction"></h3>
   </div>
+
+  {% load static %}
+  <!-- Need to load jquery before index.js. @TODO! Fix it. -->
+  <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+  <script src="{% static 'frontend/index.js' %}"></script>
 {% endblock %}
