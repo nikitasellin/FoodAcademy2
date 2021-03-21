@@ -23,3 +23,5 @@ DATABASES = {
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = 'tmp/contactus/email/'
 ADMIN_EMAIL = 'nikita@selin.com.ru'
+
+CORS_ALLOW_ALL_ORIGINS = True
