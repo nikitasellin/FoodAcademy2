@@ -1,7 +1,9 @@
 import React from 'react';
 
 
-const CourseCard = ({item}) => {
+const CourseCard = (props) => {
+  const item = props.item;
+  const isAdmin = props.isAdmin;
   return (
     <div className="col mb-4" id={item.id}>
       <div className="card">
@@ -11,12 +13,15 @@ const CourseCard = ({item}) => {
         <div className="card-body">
           <h5 className="card-title text-center">{item.title}</h5>
           {/* Superuser block */}
-            <p className="card-text text-center">
-              <a href="#" className="card-link">Редактировать</a>
-              <br />
-              <a href="#" className="card-link">Удалить</a>
-            </p>
-          {/* End of superuser block */}
+          {
+            {isAdmin}
+             ? null
+             : (<p className="card-text text-center">
+                  <a href="#" className="card-link">Редактировать</a>
+                  <br />
+                  <a href="#" className="card-link">Удалить</a>
+                </p>)
+          }
         </div>
       </div>
     </div>
@@ -24,10 +29,12 @@ const CourseCard = ({item}) => {
 }
 
 
-const AllCoursesCards = ({items}) => {
+const AllCoursesCards = (props) => {
+  const items = props.items;
+  const isAdmin = props.isAdmin;
   return (
     <div className="row row-cols-1 row-cols-md-4">
-      {items.map((item) => <CourseCard item={item} key={item.id} />)}
+      {items.map((item) => <CourseCard item={item} {...isAdmin} key={item.id} />)}
     </div>
   )
 }
@@ -37,8 +44,9 @@ class CoursesList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'coursesListUrl': this.props.url,
-            'coursesList': [] 
+            coursesListUrl: this.props.url,
+            coursesList: [],
+            isAdmin: false
         }
     }
 
@@ -46,10 +54,10 @@ class CoursesList extends React.Component {
       const url = this.state.coursesListUrl;
       let self = this;
       fetch(url)
-      .then((response)=> response.json())
+      .then((response) => response.json())
           .then(function (data) {
               console.log(data);
-              self.setState({ 'coursesList': data.results });
+              self.setState({ coursesList: data.results });
       })
       .catch(function (error) {
           console.log(error);
@@ -61,7 +69,7 @@ class CoursesList extends React.Component {
         <div className="container col-lg-6">
           <h1 className="text-center">Список курсов</h1>
           <hr />
-            <AllCoursesCards items={this.state.coursesList} />
+            <AllCoursesCards items={this.state.coursesList} isAdmin={this.state.isAdmin} />
         </div>
       );
     }
