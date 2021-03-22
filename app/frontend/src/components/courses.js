@@ -14,13 +14,13 @@ const CourseCard = (props) => {
           <h5 className="card-title text-center">{item.title}</h5>
           {/* Superuser block */}
           {
-            {isAdmin}
-             ? null
-             : (<p className="card-text text-center">
+            isAdmin === true
+             ? (<p className="card-text text-center">
                   <a href="#" className="card-link">Редактировать</a>
                   <br />
                   <a href="#" className="card-link">Удалить</a>
                 </p>)
+             : null
           }
         </div>
       </div>
@@ -34,7 +34,7 @@ const AllCoursesCards = (props) => {
   const isAdmin = props.isAdmin;
   return (
     <div className="row row-cols-1 row-cols-md-4">
-      {items.map((item) => <CourseCard item={item} {...isAdmin} key={item.id} />)}
+      {items.map((item) => <CourseCard item={item} isAdmin={isAdmin} key={item.id} />)}
     </div>
   )
 }
