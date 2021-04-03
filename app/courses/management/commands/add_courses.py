@@ -68,7 +68,7 @@ class Command(BaseCommand):
         with Faker.override_default_locale('ru_RU'):
             course_factory = CourseFactory
             group_factory = CourseGroupFactory
-            for c in range(5):
+            for c in range(15):
                 course = add_course(course_factory, all_teachers)
                 add_course_group(group_factory, course, all_students)
         print('Курсы и группы успешно добавлены')

@@ -1,16 +1,19 @@
 from django.urls import reverse_lazy
+
 from rest_framework import mixins
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet, GenericViewSet
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from contactus.models import Message
 from courses.models import Course
 from users.models import Teacher
 
 from .serializers import CourseSerializer, TeacherSerializer, \
-    TeacherAdminSerializer, CourseAdminSerializer, MessageAdminSerializer
+    TeacherAdminSerializer, CourseAdminSerializer, MessageAdminSerializer, CustomTokenRefreshSerializer, \
+    CustomTokenObtainPairSerializer
 from .paginators import StandardResultsSetPagination
 
 
@@ -64,3 +67,11 @@ class MessageAdminViewSet(mixins.ListModelMixin,
     serializer_class = MessageAdminSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = IsAdminUser,
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+
+class CustomTokenRefreshView(TokenRefreshView):
+    serializer_class = CustomTokenRefreshSerializer
