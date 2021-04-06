@@ -1,44 +1,56 @@
-// import logo from './logo.svg';
-// import './App.css';
 import React from 'react';
-import CoursesList from './components/courses';
+import { 
+  BrowserRouter as Router, 
+  Route,
+ } from  'react-router-dom';
+import { connect } from 'react-redux';
+import Navbar from './components/Navbar';
+import CoursesList from './components/courses/CoursesList';
+import CourseDetails from './components/courses/CourseDetails';
+import CourseSubscription from './components/courses/CourseSubscription';
+import Login from './components/users/Login';
+import Logout from './components/users/Logout';
+import { autoLogin } from './redux/actions';
+import './App.css';
 
 
 const BaseLayout = () => (
   <div>
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <a className="navbar-brand" href="#">FoodAcademy</a>
-      <div className="navbar-collapse collapse justify-content-center" id="navbarNav">
-        <ul className="navbar-nav text-center">
-          <li className="nav-item">
-            <a className="nav-link" href="/">Курсы</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">Преподаватели</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">Контакты</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
+    <Navbar />
     <div className="content">
-      <CoursesList url='http://127.0.0.1:8000/api/view/courses/' />
+      <Route path="/courses/details/:pk/" component={CourseDetails} />
+      <Route path="/courses/subscription/:pk/" component={CourseSubscription} />
+      <Route path="/login/" component={Login} />
+      <Route path="/logout/" component={Logout} />
+      <Route path="/" exact component={CoursesList} />
     </div>
   </div>
 )
 
-
 class App extends React.Component {
+  componentDidMount(){
+    this.props.autoLogin()
+  }
+
   render () {
     return(
-      <BaseLayout />
+      <Router>
+        <BaseLayout />
+      </Router>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    userReducer: state.userReducer
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    autoLogin: () => dispatch(autoLogin())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

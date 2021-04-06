@@ -78,14 +78,12 @@ class MessageAdminViewSet(mixins.ListModelMixin,
     permission_classes = IsAdminUser,
 
 
-class SubscriptionToCourseViewSet(mixins.ListModelMixin,
-                                  mixins.RetrieveModelMixin,
-                                  mixins.UpdateModelMixin,
+class SubscriptionToCourseViewSet(mixins.UpdateModelMixin,
                                   GenericViewSet):
     queryset = CourseGroup.objects.all()
     serializer_class = CourseGroupBaseSerializer
     pagination_class = StandardResultsSetPagination
-    permission_classes = IsStudent, IsRealSubscriber
+    permission_classes = (IsStudent, IsRealSubscriber)
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
