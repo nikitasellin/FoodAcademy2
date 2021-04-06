@@ -1,20 +1,21 @@
 from django.urls import reverse_lazy
-
 from rest_framework import mixins
 from rest_framework.permissions import IsAdminUser
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet, GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet, ReadOnlyModelViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from contactus.models import Message
-from courses.models import Course
+from courses.models import Course, CourseGroup
 from users.models import Teacher
 
-from .serializers import CourseSerializer, TeacherSerializer, \
-    TeacherAdminSerializer, CourseAdminSerializer, MessageAdminSerializer, CustomTokenRefreshSerializer, \
-    CustomTokenObtainPairSerializer
-from .paginators import StandardResultsSetPagination
+from api.serializers import CustomTokenRefreshSerializer, CustomTokenObtainPairSerializer, \
+    MessageAdminSerializer, TeacherAdminSerializer, CourseAdminSerializer, TeacherSerializer, CourseSerializer, \
+    CourseGroupBaseSerializer
+from api.paginators import StandardResultsSetPagination
+from api.permissions import IsStudent, IsRealSubscriber
 
 
 class RootView(APIView):
@@ -30,6 +31,14 @@ class RootView(APIView):
                 reverse_lazy('api:token_refresh')),
         }
         return Response(links)
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+
+class CustomTokenRefreshView(TokenRefreshView):
+    serializer_class = CustomTokenRefreshSerializer
 
 
 class CoursesViewSet(ReadOnlyModelViewSet):
@@ -69,9 +78,33 @@ class MessageAdminViewSet(mixins.ListModelMixin,
     permission_classes = IsAdminUser,
 
 
-class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer
+class SubscriptionToCourseViewSet(mixins.ListModelMixin,
+                                  mixins.RetrieveModelMixin,
+                                  mixins.UpdateModelMixin,
+                                  GenericViewSet):
+    queryset = CourseGroup.objects.all()
+    serializer_class = CourseGroupBaseSerializer
+    pagination_class = StandardResultsSetPagination
+    permission_classes = IsStudent, IsRealSubscriber
 
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        if not partial:
+            return super().update(request, *args, **kwargs)
+        instance = self.get_object()
+        students_list = [student.pk for student in instance.students.all()]
+        new_student = request.data['newStudent']
+        students_list.append(new_student)
+        serializer = self.get_serializer(
+            instance,
+            data={'students': set(students_list)},
+            partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
 
-class CustomTokenRefreshView(TokenRefreshView):
-    serializer_class = CustomTokenRefreshSerializer
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)

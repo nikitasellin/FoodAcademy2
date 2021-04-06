@@ -5,9 +5,10 @@ from easy_thumbnails.templatetags.thumbnail import thumbnail_url
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from rest_framework_simplejwt.state import token_backend
 
-from courses.models import Course
+from courses.models import Course, CourseGroup
 from users.models import Teacher
 from contactus.models import Message
+from users.utils import get_user_role
 
 
 class ThumbnailSerializer(serializers.ImageField):
@@ -33,7 +34,15 @@ class TeacherSerializer(serializers.ModelSerializer):
         fields = 'id', 'first_name', 'last_name'
 
 
+class CourseGroupBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseGroup
+        fields = ('id', 'title', 'start_date', 'students')
+
+
 class CourseSerializer(serializers.ModelSerializer):
+    course_group = CourseGroupBaseSerializer(many=True, read_only=True)
+
     class Meta:
         model = Course
         fields = '__all__'
@@ -76,8 +85,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data.update(
             {
                 'user': dict(
+                    pk=self.user.pk,
                     full_name=self.user.full_name,
                     email=self.user.email,
+                    role=get_user_role(self.user.pk),
                 )
             }
         )
@@ -89,15 +100,15 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         data = super().validate(attrs)
         decoded_payload = token_backend.decode(data['access'], verify=True)
         user_pk = decoded_payload['user_id']
-        print(user_pk)
         user_model = get_user_model()
         user = user_model.objects.get(id=user_pk)
-        print(user.email)
         data.update(
             {
                 'user': dict(
+                    pk=user.pk,
                     full_name=user.full_name,
                     email=user.email,
+                    role=get_user_role(user.pk),
                 )
             }
         )

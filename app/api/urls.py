@@ -13,11 +13,16 @@ rw_router = DefaultRouter()
 rw_router.register('courses', views.CourseAdminViewSet)
 rw_router.register('teachers', views.TeacherAdminViewSet)
 rw_router.register('messages', views.MessageAdminViewSet)
+rw_router.register('groups', views.SubscriptionToCourseViewSet)
 
 urlpatterns = [
-    path('token/obtain/', views.CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', views.CustomTokenRefreshView.as_view(), name='token_refresh'),
-    path('view/', include((ro_router.urls, app_name), namespace='view_models')),
-    path('full-access/', include((rw_router.urls, app_name), namespace='full_access')),
+    path('token/obtain/', views.CustomTokenObtainPairView.as_view(),
+         name='token_obtain_pair'),
+    path('token/refresh/', views.CustomTokenRefreshView.as_view(),
+         name='token_refresh'),
+    path('view/',
+         include((ro_router.urls, app_name), namespace='view_models')),
+    path('full-access/',
+         include((rw_router.urls, app_name), namespace='full_access')),
     path('', views.RootView.as_view())
 ]
