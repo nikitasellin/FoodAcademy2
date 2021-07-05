@@ -12,6 +12,7 @@ requests==2.25.1
 graphene==2.1.8
 graphene-django==2.15.0
 django-cors-headers==3.7.0
+django-debug-toolbar==3.2.1
 
 # Dependencies
 amqp==5.0.5
@@ -43,3 +44,4 @@ graphql-relay==2.0.1
 promise==2.3
 rx==1.6.1
 singledispatch==3.4.0.3
+typing-extensions==3.10.0.0

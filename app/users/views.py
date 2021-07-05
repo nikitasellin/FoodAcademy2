@@ -2,12 +2,10 @@ import json
 
 import requests
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from django.views.generic.edit import FormMixin
 
 from courses.views import SuperUserPassesTestMixin
 

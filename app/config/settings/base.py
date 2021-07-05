@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'graphene_django',
     'corsheaders',
+    'debug_toolbar',
 
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
@@ -38,6 +39,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
 

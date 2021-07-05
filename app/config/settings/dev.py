@@ -24,4 +24,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = 'tmp/contactus/email/'
 ADMIN_EMAIL = 'nikita@selin.com.ru'
 
+# CORS
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Debug toolbar
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': 'builtins.bool'  # always true
+}
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
