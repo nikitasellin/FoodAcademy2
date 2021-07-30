@@ -56,6 +56,10 @@ class TeacherAdmin(AdministratorAdmin):
 @admin.register(Student)
 class StudentAdmin(AdministratorAdmin):
     model = Student
+    list_display = ('first_name', 'last_name', 'email',
+                    'phone_number', 'is_active', 'is_staff',
+                    'is_superuser', 'course_groups_list')
+
 
     fieldsets = (
         ('Основная информация',
@@ -74,3 +78,11 @@ class StudentAdmin(AdministratorAdmin):
         ('Дополнительная информация',
          {'fields': ('birth_date',)})
     )
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.prefetch_related('course_groups')
+
+    def course_groups_list(self, obj: Student):
+        course_groups = obj.course_groups.all()
+        return ', '.join((g.title for g in course_groups))

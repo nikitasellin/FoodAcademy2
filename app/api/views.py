@@ -48,7 +48,7 @@ class CoursesViewSet(ReadOnlyModelViewSet):
 
 
 class ScheduleViewSet(ReadOnlyModelViewSet):
-    queryset = Schedule.objects.all()
+    queryset = Schedule.objects.all().select_related('teacher')
     serializer_class = ScheduleSerializer
     pagination_class = StandardResultsSetPagination
 
