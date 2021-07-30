@@ -2,8 +2,21 @@ from django.contrib import admin
 
 from .models import Course, CourseGroup, Schedule
 
-admin.site.register(Course)
+
 admin.site.register(Schedule)
+
+
+@admin.register(Course)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = 'title', 'teachers_list',
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.prefetch_related('teachers')
+
+    def teachers_list(self, obj: Course):
+        teachers = obj.teachers.all()
+        return ', '.join((t.full_name for t in teachers))
 
 
 class ScheduleInline(admin.TabularInline):
@@ -14,6 +27,10 @@ class ScheduleInline(admin.TabularInline):
 
 @admin.register(CourseGroup)
 class CourseGroupAdmin(admin.ModelAdmin):
-    list_display = 'title', 'start_date', 'end_date'
+    list_display = 'title', 'start_date', 'end_date', 'students_list',
     ordering = '-start_date',
     inlines = ScheduleInline,
+
+    def students_list(self, obj: Course):
+        students = obj.students.all()
+        return ', '.join((s.full_name for s in students))

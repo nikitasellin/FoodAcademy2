@@ -5,7 +5,7 @@ from easy_thumbnails.templatetags.thumbnail import thumbnail_url
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from rest_framework_simplejwt.state import token_backend
 
-from courses.models import Course, CourseGroup
+from courses.models import Course, CourseGroup, Schedule
 from users.models import Teacher
 from contactus.models import Message
 from users.utils import get_user_role
@@ -49,6 +49,14 @@ class CourseSerializer(serializers.ModelSerializer):
 
     thumbnail = ThumbnailSerializer(alias='thumbnail', source='image')
     teachers = TeacherSerializer(many=True, read_only=True)
+
+
+class ScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Schedule
+        fields = '__all__'
+
+    teacher = TeacherSerializer(read_only=True)
 
 
 class TeacherAdminSerializer(serializers.ModelSerializer):

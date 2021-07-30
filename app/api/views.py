@@ -8,12 +8,12 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet, ReadOnlyModelV
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from contactus.models import Message
-from courses.models import Course, CourseGroup
+from courses.models import Course, CourseGroup, Schedule
 from users.models import Teacher
 
 from api.serializers import CustomTokenRefreshSerializer, CustomTokenObtainPairSerializer, \
     MessageAdminSerializer, TeacherAdminSerializer, CourseAdminSerializer, TeacherSerializer, CourseSerializer, \
-    CourseGroupBaseSerializer
+    CourseGroupBaseSerializer, ScheduleSerializer
 from api.paginators import StandardResultsSetPagination
 from api.permissions import IsStudent, IsRealSubscriber
 
@@ -44,6 +44,12 @@ class CustomTokenRefreshView(TokenRefreshView):
 class CoursesViewSet(ReadOnlyModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    pagination_class = StandardResultsSetPagination
+
+
+class ScheduleViewSet(ReadOnlyModelViewSet):
+    queryset = Schedule.objects.all()
+    serializer_class = ScheduleSerializer
     pagination_class = StandardResultsSetPagination
 
 

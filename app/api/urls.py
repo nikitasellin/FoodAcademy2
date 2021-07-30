@@ -7,6 +7,7 @@ app_name = 'api'
 
 ro_router = DefaultRouter()
 ro_router.register('courses', views.CoursesViewSet)
+ro_router.register('schedule', views.ScheduleViewSet)
 ro_router.register('teachers', views.TeachersViewSet)
 
 rw_router = DefaultRouter()
