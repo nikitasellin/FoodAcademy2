@@ -76,7 +76,7 @@ class CourseAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = 'id', 'title', 'description', 'teachers'
-    teachers = TeacherSerializer(many=True)
+    teachers = TeacherSerializer(many=True, read_only=True)
 
 
 class MessageAdminSerializer(serializers.ModelSerializer):

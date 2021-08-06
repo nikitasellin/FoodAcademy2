@@ -45,6 +45,7 @@ class TeacherDeleteView(SuperUserPassesTestMixin, DeleteView):
 class UserProfileView(LoginRequiredMixin, DetailView):
     queryset = get_user_model().objects.all()
     form_class = TokenForm
+    login_url = '/users/login/'
 
     def get_context_data(self, **kwargs):
         access_token = self.request.session.get('access_token', '')

@@ -144,6 +144,13 @@ http://127.0.0.1:8000/graphql/
 }
 ```
 
+### Тестирование.
+
+Запуск тестов для backend:
+```
+# docker-compose exec app python manage.py test
+```
+
 ### Frontend.
 
 Интерфейс на React доступен по адресу:

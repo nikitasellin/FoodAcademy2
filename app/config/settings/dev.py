@@ -28,9 +28,9 @@ ADMIN_EMAIL = 'nikita@selin.com.ru'
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Debug toolbar
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': 'builtins.bool'  # always true
-}
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
+# DEBUG_TOOLBAR_CONFIG = {
+#     'SHOW_TOOLBAR_CALLBACK': 'builtins.bool'  # always true
+# }
+# INTERNAL_IPS = [
+#     '127.0.0.1',
+# ]
