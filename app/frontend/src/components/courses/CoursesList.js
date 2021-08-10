@@ -129,3 +129,7 @@ class CoursesList extends React.Component {
 }
 
 export default CoursesList;
+export {
+  CourseCard,
+  AllCoursesCards
+};
